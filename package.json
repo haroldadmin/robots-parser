@@ -1,0 +1,16 @@
+{
+  "name": "robots-parser",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Parser for robots.txt",
+  "scripts": {
+    "test": "vitest"
+  },
+  "author": "haroldadmin",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.4",
+    "tsc": "^2.0.4",
+    "vitest": "^1.4.0"
+  }
+}
