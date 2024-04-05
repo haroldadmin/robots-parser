@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "format": "prettier -w .",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "author": "haroldadmin",
   "license": "ISC",
