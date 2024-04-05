@@ -8,8 +8,7 @@ describe('tokenize', () => {
   })
 
   it('should tokenize a file with just whitespace', () => {
-    const tokens = tokenize(`
-    `)
+    const tokens = tokenize(`   `)
     expect(tokens).toHaveLength(0)
   })
 
@@ -24,7 +23,8 @@ describe('tokenize', () => {
   ])("should tokenize %s as %s", (token, expectedType) => {
     expect(tokenize(token)).toEqual([{
       type: expectedType,
-      value: token
+      value: token,
+      position: 0
     }])
   })
 
@@ -33,15 +33,18 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expect.arrayContaining([
       {
         type: 'USER_AGENT',
-        value: 'User-agent'
+        value: 'User-agent',
+        position: 0,
       },
       {
         type: ':',
-        value: ':'
+        value: ':',
+        position: 10,
       },
       {
         type: 'VALUE',
-        value: '*'
+        value: '*',
+        position: 12,
       }
     ]))
   })
@@ -55,19 +58,23 @@ describe('tokenize', () => {
     expect(tokens).toEqual(expect.arrayContaining([
       {
         type: 'USER_AGENT',
-        value: 'User-agent'
+        value: 'User-agent',
+        position: 9,
       },
       {
         type: 'VALUE',
-        value: 'Google'
+        value: 'Google',
+        position: 21,
       },
       {
         type: 'USER_AGENT',
         value: 'user-agent',
+        position: 36,
       },
       {
         type: 'VALUE',
-        value: 'Bing'
+        value: 'Bing',
+        position: 48,
       }
     ]))
   })
@@ -80,19 +87,23 @@ describe('tokenize', () => {
       `)).toEqual(expect.arrayContaining([
       {
         type: 'ALLOW',
-        value: 'Allow'
+        value: 'Allow',
+        position: 7,
       },
       {
         type: 'VALUE',
-        value: '/blog'
+        value: '/blog',
+        position: 14,
       },
       {
         type: 'ALLOW',
-        value: 'Allow'
+        value: 'Allow',
+        position: 26,
       },
       {
         type: 'VALUE',
-        value: '/content'
+        value: '/content',
+        position: 33,
       }
     ]))
   })
@@ -104,19 +115,23 @@ describe('tokenize', () => {
       `)).toEqual(expect.arrayContaining([
       {
         type: 'DISALLOW',
-        value: 'Disallow'
+        value: 'Disallow',
+        position: 7,
       },
       {
         type: 'VALUE',
-        value: '/dashboard'
+        value: '/dashboard',
+        position: 17,
       },
       {
         type: 'DISALLOW',
-        value: 'disallow'
+        value: 'disallow',
+        position: 34,
       },
       {
         type: 'VALUE',
-        value: '/admin'
+        value: '/admin',
+        position: 44,
       }
     ]))
   })
@@ -125,11 +140,13 @@ describe('tokenize', () => {
     expect(tokenize('crawl-delay: 10')).toEqual(expect.arrayContaining([
       {
         type: 'CRAWL_DELAY',
-        value: 'crawl-delay'
+        value: 'crawl-delay',
+        position: 0
       },
       {
         type: 'VALUE',
-        value: '10'
+        value: '10',
+        position: 13
       }
     ]))
   })
@@ -138,11 +155,13 @@ describe('tokenize', () => {
     expect(tokenize('crawl-delay: 10')).toEqual(expect.arrayContaining([
       {
         type: 'CRAWL_DELAY',
-        value: 'crawl-delay'
+        value: 'crawl-delay',
+        position: 0,
       },
       {
         type: 'VALUE',
-        value: '10'
+        value: '10',
+        position: 13,
       }
     ]))
   })
@@ -151,11 +170,13 @@ describe('tokenize', () => {
     expect(tokenize(`sitemap: https://www.example.com/sitemap.xml`)).toEqual(expect.arrayContaining([
       {
         type: 'SITEMAP',
-        value: 'sitemap'
+        value: 'sitemap',
+        position: 0,
       },
       {
         type: 'VALUE',
-        value: 'https://www.example.com/sitemap.xml'
+        value: 'https://www.example.com/sitemap.xml',
+        position: 9
       }
     ]))
   })

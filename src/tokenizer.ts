@@ -6,12 +6,12 @@ export type TokenType =
   | "CRAWL_DELAY"
   | "SITEMAP"
   | "VALUE"
-  | "*"
   | ":";
 
 export type Token = {
   type: TokenType;
   value: string;
+  position: number;
 };
 
 type TokenSpec = {
@@ -53,7 +53,9 @@ export function tokenize(txt: string): Token[] {
   return tokens;
 }
 
-export function* generateTokens(txt: string) {
+export function* generateTokens(
+  txt: string
+): Generator<Token, undefined, void> {
   let cursor = 0;
   while (cursor < txt.length) {
     const nextValue = next(txt, cursor);
@@ -62,7 +64,7 @@ export function* generateTokens(txt: string) {
     }
 
     cursor = nextValue.cursor;
-    yield nextValue.token
+    yield nextValue.token;
   }
 }
 
@@ -73,8 +75,7 @@ type NextValue = {
 
 function next(txt: string, cursor: number): NextValue | null {
   for (const spec of SPEC) {
-    const window = txt.slice(cursor);
-    const token = match(window, spec);
+    const token = match(txt, cursor, spec);
     if (!token) {
       continue;
     }
@@ -92,8 +93,10 @@ function next(txt: string, cursor: number): NextValue | null {
   return null;
 }
 
-function match(window: string, spec: TokenSpec): Token | null {
+function match(txt: string, cursor: number, spec: TokenSpec): Token | null {
   const { type, pattern } = spec;
+
+  const window = txt.slice(cursor);
   const match = pattern.exec(window);
   if (!match) {
     return null;
@@ -107,5 +110,6 @@ function match(window: string, spec: TokenSpec): Token | null {
   return {
     type,
     value,
+    position: cursor,
   };
 }
