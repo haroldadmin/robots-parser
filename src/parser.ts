@@ -1,4 +1,4 @@
-import { Token, TokenType, generateTokens } from "./tokenizer";
+import { Token, TokenType, generateTokens } from "./tokenizer.js";
 
 type RobotsTxt = {
   type: "RobotsTxt";

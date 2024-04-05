@@ -4,6 +4,7 @@
   "type": "module",
   "description": "Parser for robots.txt",
   "scripts": {
+    "build": "tsc",
     "format": "prettier -w .",
     "test": "vitest"
   },
