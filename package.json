@@ -6,14 +6,14 @@
   "scripts": {
     "build": "tsc",
     "format": "prettier -w .",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "author": "haroldadmin",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.12.4",
     "prettier": "^3.2.5",
-    "tsc": "^2.0.4",
     "typescript": "^5.4.3",
     "vitest": "^1.4.0"
   }
