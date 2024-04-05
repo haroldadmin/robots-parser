@@ -2,6 +2,7 @@
   "name": "robots-parser",
   "version": "1.0.0",
   "type": "module",
+  "exports": "./index.ts",
   "description": "Parser for robots.txt",
   "scripts": {
     "build": "tsc",
