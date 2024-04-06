@@ -21,6 +21,7 @@ type TokenSpec = {
 
 const SPEC: TokenSpec[] = [
   { pattern: /^\s+/, type: "NULL" },
+  { pattern: /^#.+/, type: "NULL" },
   { pattern: /^user-agent/i, type: "USER_AGENT" },
   { pattern: /^disallow/i, type: "DISALLOW" },
   { pattern: /^allow/i, type: "ALLOW" },

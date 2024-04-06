@@ -199,6 +199,39 @@ describe("tokenize", () => {
       ])
     );
   });
+
+  it("should skip comment lines", () => {
+    const txt = `# This is a comment`;
+    const tokens = tokenize(txt);
+    expect(tokens).toHaveLength(0);
+  });
+
+  it("should skip comments after values", () => {
+    const txt = `
+      User-agent: * # Allow all user agents
+    `;
+    const tokens = tokenize(txt);
+    expect(tokens).toHaveLength(3);
+    expect(tokens).toEqual(
+      expect.arrayContaining([
+        {
+          type: "USER_AGENT",
+          value: "User-agent",
+          position: 7,
+        },
+        {
+          type: ":",
+          value: ":",
+          position: 17,
+        },
+        {
+          type: "VALUE",
+          value: "*",
+          position: 19,
+        },
+      ])
+    );
+  });
 });
 
 describe("generateTokens", () => {
