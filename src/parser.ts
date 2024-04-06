@@ -94,7 +94,7 @@ function createRobotsTxt(lookahead: LookAhead): RobotsTxt {
   return robotsTxt;
 }
 
-function createSitemap(lookahead: LookAhead): Sitemap {
+function createSitemap(lookahead: LookAhead): string {
   eat("SITEMAP", lookahead);
   eat(":", lookahead);
   const { value } = eat("VALUE", lookahead);
