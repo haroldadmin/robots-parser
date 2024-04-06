@@ -2,16 +2,30 @@
   "name": "robots-parser",
   "version": "1.0.0",
   "type": "module",
-  "exports": "./index.ts",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "description": "Parser for robots.txt",
+  "author": "haroldadmin",
+  "license": "Apache-2.0",
+  "repository": "https://www.github.com/haroldadmin/robots-parser",
+  "keywords": [
+    "robots.txt",
+    "parser",
+    "seo",
+    "crawler"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "prepublish": "tsc",
     "build": "tsc",
     "format": "prettier -w .",
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "author": "haroldadmin",
-  "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.12.4",
     "prettier": "^3.2.5",
