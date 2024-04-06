@@ -1,11 +1,11 @@
-# robotstxt-parser
+# @haroldadmin/robots-parser
 
 A parser for robots.txt files.
 
 ## Installation
 
 ```bash
-npm install robotstxt-parser
+npm install @haroldadmin/robots-parser
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install robotstxt-parser
 Use the `parse` function to convert a robots.txt string into a parse tree.
 
 ```ts
-import { parse } from "robotstxt-parser";
+import { parse } from "@haroldadmin/robots-parser";
 
 const res = await fetch("https://www.google.com/robots.txt");
 const robotsTxt = await res.text();
