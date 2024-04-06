@@ -1,5 +1,5 @@
 {
-  "name": "robots-parser",
+  "name": "robotstxt-parser",
   "version": "1.0.0",
   "type": "module",
   "exports": "./dist/index.js",
@@ -7,7 +7,7 @@
   "description": "Parser for robots.txt",
   "author": "haroldadmin",
   "license": "Apache-2.0",
-  "repository": "https://www.github.com/haroldadmin/robots-parser",
+  "repository": "https://www.github.com/haroldadmin/robotstxt-parser",
   "keywords": [
     "robots.txt",
     "parser",
