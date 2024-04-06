@@ -13,7 +13,6 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     steps:
-    steps:
       - uses: actions/checkout@v3
 
       - name: Setup Node.js
