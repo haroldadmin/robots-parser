@@ -27,14 +27,14 @@ const SPEC: TokenSpec[] = [
   { pattern: /^allow/i, type: "ALLOW" },
   { pattern: /^crawl-delay/i, type: "CRAWL_DELAY" },
   { pattern: /^sitemap/i, type: "SITEMAP" },
+  { pattern: /^:/, type: ":" },
+  { pattern: /^\*/, type: "VALUE" },
   {
     pattern:
       /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
     type: "VALUE",
   },
-  { pattern: /^([^:\s]|\/)+/, type: "VALUE" },
-  { pattern: /^\*/, type: "VALUE" },
-  { pattern: /^:/, type: ":" },
+  { pattern: /^\S+/, type: "VALUE" },
 ];
 
 export function tokenize(txt: string): Token[] {
