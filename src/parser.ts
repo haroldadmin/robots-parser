@@ -1,8 +1,9 @@
-import { Token, TokenType, generateTokens } from "./tokenizer.js";
+import { Token, TokenType, generateTokens, tokenize } from "./tokenizer.js";
 
 type RobotsTxt = {
   type: "RobotsTxt";
-  body: Config[];
+  configs: Config[];
+  sitemap: string | undefined;
 };
 
 type Config = {
@@ -12,7 +13,7 @@ type Config = {
 };
 
 type Rule = {
-  type: "DisallowRule" | "AllowRule" | "CrawlDelayRule" | "SitemapRule";
+  type: "DisallowRule" | "AllowRule" | "CrawlDelayRule";
   value: string;
 };
 
@@ -22,11 +23,14 @@ type LookAhead = {
   findNext: () => Token | null;
 };
 
+const ruleTypes: readonly TokenType[] = ["ALLOW", "DISALLOW", "CRAWL_DELAY"];
+
 /**
  * Grammar:
  *
  * RobotsTxt
  *  : ConfigList
+ *  | Sitemap
  *  ;
  *
  * ConfigList:
@@ -56,20 +60,45 @@ export function parse(txt: string): RobotsTxt {
 }
 
 function createRobotsTxt(lookahead: LookAhead): RobotsTxt {
-  return {
+  const robotsTxt: RobotsTxt = {
     type: "RobotsTxt",
-    body: createConfigList(lookahead),
+    configs: [],
+    sitemap: undefined,
   };
-}
 
-function createConfigList(lookahead: LookAhead): Config[] {
-  const configs: Config[] = [];
-
-  while (lookahead.hasMore() && lookahead.current()?.type === "USER_AGENT") {
-    configs.push(createConfig(lookahead));
+  if (!lookahead.hasMore()) {
+    return robotsTxt;
   }
 
-  return configs;
+  while (lookahead.hasMore()) {
+    switch (lookahead.current().type) {
+      case "SITEMAP": {
+        const sitemap = createSitemap(lookahead);
+        robotsTxt.sitemap = sitemap;
+        break;
+      }
+      case "USER_AGENT": {
+        const config = createConfig(lookahead);
+        robotsTxt.configs.push(config);
+        break;
+      }
+      default: {
+        const token = lookahead.current();
+        throw new Error(
+          `Unexpected token: ${token.type} at pos ${token.position}`
+        );
+      }
+    }
+  }
+
+  return robotsTxt;
+}
+
+function createSitemap(lookahead: LookAhead): Sitemap {
+  eat("SITEMAP", lookahead);
+  eat(":", lookahead);
+  const { value } = eat("VALUE", lookahead);
+  return value;
 }
 
 function createConfig(lookahead: LookAhead): Config {
@@ -82,12 +111,6 @@ function createConfig(lookahead: LookAhead): Config {
   }
 
   const rules: Rule[] = [];
-  const ruleTypes: TokenType[] = [
-    "ALLOW",
-    "DISALLOW",
-    "CRAWL_DELAY",
-    "SITEMAP",
-  ];
   while (lookahead.hasMore() && ruleTypes.includes(lookahead.current().type)) {
     const rule = createRule(lookahead);
     rules.push(rule);
@@ -130,15 +153,6 @@ function createRule(lookahead: LookAhead): Rule {
         value,
       };
     }
-    case "SITEMAP": {
-      eat("SITEMAP", lookahead);
-      eat(":", lookahead);
-      const { value } = eat("VALUE", lookahead);
-      return {
-        type: "SitemapRule",
-        value,
-      };
-    }
     default:
       throw new Error(`Syntax error: Expected a rule at pos ${position}`);
   }
@@ -158,6 +172,7 @@ function eat(tokenType: TokenType, lookahead: LookAhead) {
 
 function createLookahead(txt: string): LookAhead {
   const iterator = generateTokens(txt);
+  const tokens = tokenize(txt);
   let token: Token | null;
 
   const findNext = () => {

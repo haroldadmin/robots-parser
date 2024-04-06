@@ -6,7 +6,8 @@ describe(parse, () => {
     const tree = parse("");
     expect(tree).toMatchObject({
       type: "RobotsTxt",
-      body: [],
+      configs: [],
+      sitemap: undefined,
     });
   });
 
@@ -17,12 +18,13 @@ describe(parse, () => {
 		Allow: /
 		Disallow: /dashboard
 		Crawl-Delay: 100
+  
 		Sitemap: https://www.example.com/sitemap-index.xml
 		`);
 
     expect(tree).toMatchObject({
       type: "RobotsTxt",
-      body: [
+      configs: [
         {
           type: "Config",
           userAgents: ["Google", "Bing"],
@@ -39,13 +41,10 @@ describe(parse, () => {
               type: "CrawlDelayRule",
               value: "100",
             },
-            {
-              type: "SitemapRule",
-              value: "https://www.example.com/sitemap-index.xml",
-            },
           ],
         },
       ],
+      sitemap: "https://www.example.com/sitemap-index.xml",
     });
   });
 
@@ -56,18 +55,18 @@ describe(parse, () => {
 		Allow: /
 		Disallow: /dashboard
 		Crawl-Delay: 100
-		Sitemap: https://www.example.com/sitemap-index.xml
 
 		User-Agent: *
 		Allow: /blog
 		Disallow: /admin
 		Crawl-Delay: 1000
+
 		Sitemap: https://www.example.com/sitemap-index.xml
 		`);
 
     expect(tree).toMatchObject({
       type: "RobotsTxt",
-      body: [
+      configs: [
         {
           type: "Config",
           userAgents: ["Google", "Bing"],
@@ -83,10 +82,6 @@ describe(parse, () => {
             {
               type: "CrawlDelayRule",
               value: "100",
-            },
-            {
-              type: "SitemapRule",
-              value: "https://www.example.com/sitemap-index.xml",
             },
           ],
         },
@@ -106,13 +101,10 @@ describe(parse, () => {
               type: "CrawlDelayRule",
               value: "1000",
             },
-            {
-              type: "SitemapRule",
-              value: "https://www.example.com/sitemap-index.xml",
-            },
           ],
         },
       ],
+      sitemap: "https://www.example.com/sitemap-index.xml",
     });
   });
 
