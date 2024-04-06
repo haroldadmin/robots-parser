@@ -7,7 +7,10 @@
   "description": "Parser for robots.txt",
   "author": "haroldadmin",
   "license": "Apache-2.0",
-  "repository": "https://www.github.com/haroldadmin/robotstxt-parser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haroldadmin/robotstxt-parser.git"
+  },
   "keywords": [
     "robots.txt",
     "parser",
